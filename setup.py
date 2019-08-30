@@ -50,7 +50,6 @@ setup(name="omero-dropbox",
       package_dir={"": "target"},
       packages=[''],
       install_requires=[
-          # No Ice included, since a native wheel is preferable
-          'omero-py',
+          "omero-py",  # requires Ice (use wheel for faster installs)
       ],
       tests_require=['pytest<3'])
