@@ -14,11 +14,9 @@ WORKDIR /src
 
 RUN /v/bin/rst-lint README.rst
 RUN /v/bin/python setup.py sdist
-RUN /v/bin/pip install dist/omero-py*gz
-RUN /v/bin/python -c "import omero_version; print omero_version.omero_version"
+RUN /v/bin/pip install dist/omero-dropbox*gz
 
 # Copy test-related files and run
-COPY ice.config /src/
-COPY *.ini /src/
 COPY test /src/test
+COPY *.ini /src/
 RUN /v/bin/tox

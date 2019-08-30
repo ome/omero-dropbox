@@ -47,7 +47,7 @@ setup(name="omero-dropbox",
       author="The Open Microscopy Team",
       author_email="ome-devel@lists.openmicroscopy.org.uk",
       url=url,
-      package_dir={"": "target"},
+      package_dir={"": "src"},
       packages=[''],
       install_requires=[
           "omero-py",  # requires Ice (use wheel for faster installs)
