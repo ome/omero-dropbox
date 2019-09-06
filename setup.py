@@ -18,6 +18,8 @@ VERSION = "5.5.dev1"
 
 url = 'https://docs.openmicroscopy.org/latest/omero/developers/Server/FS.html'
 
+packageless = glob.glob("src/*.py")
+packageless = [x[4:-3] for x in packageless]
 
 def read(fname):
     """
@@ -48,7 +50,7 @@ setup(name="omero-dropbox",
       author_email="ome-devel@lists.openmicroscopy.org.uk",
       url=url,
       package_dir={"": "src"},
-      packages=[''],
+      py_modules=packageless,
       install_requires=[
           "omero-py",  # requires Ice (use wheel for faster installs)
       ],
