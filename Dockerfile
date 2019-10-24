@@ -22,7 +22,6 @@ USER tox
 COPY --chown=tox:tox *.py /src/
 COPY --chown=tox:tox README.rst /src
 COPY --chown=tox:tox src /src/src
-COPY --chown=tox:tox bin /src/bin
 WORKDIR /src
 
 # Copy test-related files and run
