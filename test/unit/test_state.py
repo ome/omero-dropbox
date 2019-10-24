@@ -9,6 +9,7 @@
 
 """
 
+from builtins import object
 import pytest
 import logging
 import time
@@ -96,9 +97,9 @@ class TestState(object):
     def testEntryMoved1(self):
         l = []
         self.s.update({'file1': ['file1']}, 0.1, listcb(l))
-        assert 1 == self.s.keys()
+        assert 1 == list(self.s.keys())
         self.s.update({'file2': ['file1', 'file2']}, 0.1, listcb(l))
-        assert 2 == self.s.keys()
+        assert 2 == list(self.s.keys())
         time.sleep(0.25)
         assert 1 == len(l)
 
@@ -106,31 +107,31 @@ class TestState(object):
     def testEntryMoved2(self):
         self.s.update(
             {'file1': ['file1']}, 0.1, clearcb(self.log, self.s, 'file1'))
-        assert 1 == len(self.s.keys())
+        assert 1 == len(list(self.s.keys()))
         assert 1 == self.s.count()
         self.s.update(
             {'file2': ['file1', 'file2']}, 0.1,
             clearcb(self.log, self.s, 'file2'))
-        assert 2 == len(self.s.keys())
+        assert 2 == len(list(self.s.keys()))
         assert 1 == self.s.count()
         time.sleep(0.25)
-        assert 0 == len(self.s.keys())
+        assert 0 == len(list(self.s.keys()))
         assert 0 == self.s.count()
 
     @pytest.mark.broken(ticket="12566")
     def testEntryOutOfSyncSubsume(self):
         self.s.update({'file1': ['file1']}, 0.1, nullcb)
-        assert 1 == len(self.s.keys())
+        assert 1 == len(list(self.s.keys()))
         self.s.update({'file2': ['file2']}, 0.1, nullcb)
-        assert 2 == len(self.s.keys())
+        assert 2 == len(list(self.s.keys()))
         self.s.update({'file2': ['file1', 'file2']}, 0.1, nullcb)
-        assert 2 == len(self.s.keys())
+        assert 2 == len(list(self.s.keys()))
 
     @pytest.mark.broken(ticket="12566")
     def testEntryOutOfSyncSteal(self):
         self.s.update({'file1': ['file1', 'file3']}, 0.1, nullcb)
-        assert 2 == len(self.s.keys())
+        assert 2 == len(list(self.s.keys()))
         self.s.update({'file2': ['file2']}, 0.1, nullcb)
-        assert 3 == len(self.s.keys())
+        assert 3 == len(list(self.s.keys()))
         self.s.update({'file2': ['file2', 'file3']}, 0.1, nullcb)
-        assert 3 == len(self.s.keys())
+        assert 3 == len(list(self.s.keys()))

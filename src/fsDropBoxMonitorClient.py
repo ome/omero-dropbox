@@ -8,10 +8,15 @@
 
 """
 
+from future import standard_library
+standard_library.install_aliases()
+from builtins import str
+from builtins import range
+from builtins import object
 import shlex
 import logging
 import threading
-import Queue
+import queue
 import time
 import path as pathModule
 
@@ -108,7 +113,7 @@ class MonitorState(object):
         for testing. None of the import logic depends on using
         this method.
         """
-        return self.__entries.keys()
+        return list(self.__entries.keys())
 
     @perf
     @locked
@@ -128,7 +133,7 @@ class MonitorState(object):
         returned from omero.utils.import_candidates.as_dictionary and updates
         the internal state
         """
-        for key, seq in data.items():
+        for key, seq in list(data.items()):
             key = self.checkKey(key)
             assert key in seq  # Guarantees length > 1
             # Key ignored after this point.
@@ -185,7 +190,7 @@ class MonitorState(object):
                         "Key %s moved entries:%s=>%s", key, entry2, entry)
                     self.__entries[key] = entry
                     count = 0
-                    for v in self.__entries.values():
+                    for v in list(self.__entries.values()):
                         if v == entry2:
                             count += 1
                     if count:
@@ -232,7 +237,7 @@ class MonitorState(object):
         """
         self.log.info("Stop called")
         try:
-            for k, s in self.__entries.items():
+            for k, s in list(self.__entries.items()):
                 self.clear(k, s)
         finally:
             del self.__entries
@@ -294,7 +299,7 @@ class MonitorWorker(threading.Thread):
                         ids.add(entry.fileId)
                         if len(ids) >= self.batch:
                             break
-            except Queue.Empty:
+            except queue.Empty:
                 pass
 
             # Slowing down this thread to prevent a very busy wait
@@ -359,7 +364,7 @@ class MonitorClientI(monitors.MonitorClient):
         self.worker_count = worker_count
         self.worker_batch = worker_batch
         self.event = get_event()
-        self.queue = Queue.Queue(0)
+        self.queue = queue.Queue(0)
         self.state = MonitorState(self.event)
         self.resources = Resources(stop_event=self.event)
         if ctx:

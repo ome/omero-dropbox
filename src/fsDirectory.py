@@ -11,6 +11,8 @@
 
 """
 
+from builtins import str
+from builtins import object
 import logging
 from time import localtime, strftime
 
@@ -244,8 +246,8 @@ class Directory(object):
         """
         fileList = []
         if isinstance(littleTree, DirNode) and isinstance(bigTree, DirNode):
-            for childName, childNode in bigTree.getChildren().items():
-                if childName not in littleTree.getChildren().keys():
+            for childName, childNode in list(bigTree.getChildren().items()):
+                if childName not in list(littleTree.getChildren().keys()):
                     fileList.extend(childNode.getAllFiles())
                 else:
                     if (self.pathMode == 'Follow'
@@ -278,8 +280,8 @@ class Directory(object):
         """
         fileList = []
         if isinstance(littleTree, DirNode) and isinstance(bigTree, DirNode):
-            for childName, childNode in bigTree.getChildren().items():
-                if childName in littleTree.getChildren().keys():
+            for childName, childNode in list(bigTree.getChildren().items()):
+                if childName in list(littleTree.getChildren().keys()):
                     if isinstance(childNode, FileNode):
                         if 'SIZE' in compare:
                             if (childNode.getSize() !=
@@ -570,7 +572,7 @@ class DirNode(Node):
         """
         reprStr = padding + Node.__repr__(self) + '/\n'
         if len(self.children) > 0:
-            for child in self.children.values():
+            for child in list(self.children.values()):
                 reprStr += child.__repr__(padding=padding + '  ')
         return reprStr
 
@@ -621,7 +623,7 @@ class DirNode(Node):
         """
         fileList = [self.pathString]
         if len(self.children) > 0:
-            for child in self.children.values():
+            for child in list(self.children.values()):
                 fileList.extend(child.getAllFiles())
 
         return fileList
