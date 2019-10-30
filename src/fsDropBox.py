@@ -8,6 +8,8 @@
 
 """
 
+from builtins import str
+from builtins import range
 import logging
 log = logging.getLogger("fsclient.DropBox")
 
@@ -44,7 +46,7 @@ class DropBox(Ice.Application):
     def run(self, args):
         # Configure our communicator
         ofr.registerObjectFactory(self.communicator())
-        for of in omero.rtypes.ObjectFactories.values():
+        for of in list(omero.rtypes.ObjectFactories.values()):
             of.register(self.communicator())
 
         retVal = -1
@@ -111,7 +113,7 @@ class DropBox(Ice.Application):
             return retVal
 
         try:
-            if 'default' in monitorParameters.keys():
+            if 'default' in list(monitorParameters.keys()):
                 if not monitorParameters['default']['watchDir']:
                     dataDir = configService.getConfigValue("omero.data.dir")
                     defaultDropBoxDir = props.getPropertyWithDefault(
@@ -152,7 +154,7 @@ class DropBox(Ice.Application):
             mClient = {}
             monitorId = {}
 
-            for user in monitorParameters.keys():
+            for user in list(monitorParameters.keys()):
                 if isTestClient:
                     self.callbackOnInterrupt()
                     log.info("Creating test client for user: %s", user)
@@ -255,7 +257,7 @@ class DropBox(Ice.Application):
             # Catching here guarantees cleanup.
             log.exception("Executor error")
 
-        for user in mClient.keys():
+        for user in list(mClient.keys()):
             try:
                 fsServer.stopMonitor(monitorId[user])
                 try:
@@ -521,18 +523,18 @@ class DropBox(Ice.Application):
                             'throttleImport'] = 5  # seconds
 
                     try:
-                        monitorParams[importUser[i]]['timeToLive'] = long(
+                        monitorParams[importUser[i]]['timeToLive'] = int(
                             timeToLive[i].strip(string.whitespace)) * 1000
                     except:
                         # milliseconds
-                        monitorParams[importUser[i]]['timeToLive'] = 0L
+                        monitorParams[importUser[i]]['timeToLive'] = 0
 
                     try:
-                        monitorParams[importUser[i]]['timeToIdle'] = long(
+                        monitorParams[importUser[i]]['timeToIdle'] = int(
                             timeToIdle[i].strip(string.whitespace)) * 1000
                     except:
                         # milliseconds
-                        monitorParams[importUser[i]]['timeToIdle'] = 600000L
+                        monitorParams[importUser[i]]['timeToIdle'] = 600000
 
                     try:
                         monitorParams[importUser[i]]['fileBatch'] = int(

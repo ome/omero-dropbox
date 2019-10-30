@@ -7,6 +7,7 @@
     Use is subject to license terms supplied in LICENSE.txt
 
 """
+from builtins import str
 import logging
 
 try:
@@ -104,7 +105,7 @@ class FileServerI(monitors.FileServer):
         try:
             dirList = fullPath.dirs(filter)
             fileList = fullPath.files(filter)
-        except Exception, e:
+        except Exception as e:
             self.log.error(
                 'Unable to get directory of  '
                 + str(fullPath) + ' : ' + str(e))
@@ -147,7 +148,7 @@ class FileServerI(monitors.FileServer):
         try:
             dirList = fullPath.dirs(filter)
             fileList = fullPath.files(filter)
-        except Exception, e:
+        except Exception as e:
             self.log.error(
                 'Unable to get directory of  '
                 + str(fullPath) + ' : ' + str(e))
@@ -161,7 +162,7 @@ class FileServerI(monitors.FileServer):
                 fullList.append(self._getFileStats(d.name))
             for f in fileList:
                 fullList.append(self._getFileStats(f.name))
-        except Exception, e:
+        except Exception as e:
             self.log.error('Failed to get file stats : ' + str(e))
             raise omero.OmeroFSError(
                 reason='Failed to getfile stats : ' + str(e))
@@ -186,14 +187,14 @@ class FileServerI(monitors.FileServer):
         """
         try:
             pathString = self._getPathString(fileId)
-        except Exception, e:
+        except Exception as e:
             self.log.error('File ID  ' + str(fileId) + ' not on this FSServer')
             raise omero.OmeroFSError(
                 reason='File ID  ' + str(fileId) + ' not on this FSServer')
 
         try:
             name = pathModule.path(pathString).name
-        except Exception, e:
+        except Exception as e:
             self.log.error(
                 'Failed to get  ' + str(fileId) + ' base name : ' + str(e))
             raise omero.OmeroFSError(
@@ -220,14 +221,14 @@ class FileServerI(monitors.FileServer):
         """
         try:
             pathString = self._getPathString(fileId)
-        except Exception, e:
+        except Exception as e:
             self.log.error('File ID  ' + str(fileId) + ' not on this FSServer')
             raise omero.OmeroFSError(
                 reason='File ID  ' + str(fileId) + ' not on this FSServer')
 
         try:
             return self._getFileStats(pathString)
-        except Exception, e:
+        except Exception as e:
             self.log.error(
                 'Failed to get  ' + str(fileId) + ' stats : ' + str(e))
             raise omero.OmeroFSError(
@@ -251,14 +252,14 @@ class FileServerI(monitors.FileServer):
         """
         try:
             pathString = self._getPathString(fileId)
-        except Exception, e:
+        except Exception as e:
             self.log.error('File ID  ' + str(fileId) + ' not on this FSServer')
             raise omero.OmeroFSError(
                 reason='File ID  ' + str(fileId) + ' not on this FSServer')
 
         try:
             size = pathModule.path(pathString).size
-        except Exception, e:
+        except Exception as e:
             self.log.error(
                 'Failed to get  ' + str(fileId) + ' size : ' + str(e))
             raise omero.OmeroFSError(
@@ -284,14 +285,14 @@ class FileServerI(monitors.FileServer):
         """
         try:
             pathString = self._getPathString(fileId)
-        except Exception, e:
+        except Exception as e:
             self.log.error('File ID  ' + str(fileId) + ' not on this FSServer')
             raise omero.OmeroFSError(
                 reason='File ID  ' + str(fileId) + ' not on this FSServer')
 
         try:
             owner = pathModule.path(pathString).owner
-        except Exception, e:
+        except Exception as e:
             self.log.error(
                 'Failed to get  ' + str(fileId) + ' owner : ' + str(e))
             raise omero.OmeroFSError(
@@ -317,14 +318,14 @@ class FileServerI(monitors.FileServer):
         """
         try:
             pathString = self._getPathString(fileId)
-        except Exception, e:
+        except Exception as e:
             self.log.error('File ID  ' + str(fileId) + ' not on this FSServer')
             raise omero.OmeroFSError(
                 reason='File ID  ' + str(fileId) + ' not on this FSServer')
 
         try:
             ctime = pathModule.path(pathString).ctime
-        except Exception, e:
+        except Exception as e:
             self.log.error(
                 'Failed to get  ' + str(fileId) + ' ctime : ' + str(e))
             raise omero.OmeroFSError(
@@ -350,14 +351,14 @@ class FileServerI(monitors.FileServer):
         """
         try:
             pathString = self._getPathString(fileId)
-        except Exception, e:
+        except Exception as e:
             self.log.error('File ID  ' + str(fileId) + ' not on this FSServer')
             raise omero.OmeroFSError(
                 reason='File ID  ' + str(fileId) + ' not on this FSServer')
 
         try:
             mtime = pathModule.path(pathString).mtime
-        except Exception, e:
+        except Exception as e:
             self.log.error(
                 'Failed to get  ' + str(fileId) + ' mtime : ' + str(e))
             raise omero.OmeroFSError(
@@ -383,14 +384,14 @@ class FileServerI(monitors.FileServer):
         """
         try:
             pathString = self._getPathString(fileId)
-        except Exception, e:
+        except Exception as e:
             self.log.error('File ID  ' + str(fileId) + ' not on this FSServer')
             raise omero.OmeroFSError(
                 reason='File ID  ' + str(fileId) + ' not on this FSServer')
 
         try:
             atime = pathModule.path(pathString).atime
-        except Exception, e:
+        except Exception as e:
             self.log.error(
                 'Failed to get  ' + str(fileId) + ' atime : ' + str(e))
             raise omero.OmeroFSError(
@@ -416,14 +417,14 @@ class FileServerI(monitors.FileServer):
         """
         try:
             pathString = self._getPathString(fileId)
-        except Exception, e:
+        except Exception as e:
             self.log.error('File ID  ' + str(fileId) + ' not on this FSServer')
             raise omero.OmeroFSError(
                 reason='File ID  ' + str(fileId) + ' not on this FSServer')
 
         try:
             isdir = pathModule.path(pathString).isdir
-        except Exception, e:
+        except Exception as e:
             self.log.error(
                 'Failed to get  ' + str(fileId) + ' isdir : ' + str(e))
             raise omero.OmeroFSError(
@@ -449,14 +450,14 @@ class FileServerI(monitors.FileServer):
         """
         try:
             pathString = self._getPathString(fileId)
-        except Exception, e:
+        except Exception as e:
             self.log.error('File ID  ' + str(fileId) + ' not on this FSServer')
             raise omero.OmeroFSError(
                 reason='File ID  ' + str(fileId) + ' not on this FSServer')
 
         try:
             isfile = pathModule.path(pathString).isfile
-        except Exception, e:
+        except Exception as e:
             self.log.error(
                 'Failed to get  ' + str(fileId) + ' isfile : ' + str(e))
             raise omero.OmeroFSError(
@@ -482,14 +483,14 @@ class FileServerI(monitors.FileServer):
         """
         try:
             pathString = self._getPathString(fileId)
-        except Exception, e:
+        except Exception as e:
             self.log.error('File ID  ' + str(fileId) + ' not on this FSServer')
             raise omero.OmeroFSError(
                 reason='File ID  ' + str(fileId) + ' not on this FSServer')
 
         try:
             sha1 = self._getSHA1(pathString)
-        except Exception, e:
+        except Exception as e:
             self.log.error(
                 'Failed to get SHA1 digest  ' + pathString + ' : ' + str(e))
             raise omero.OmeroFSError(reason=str(e))
@@ -520,7 +521,7 @@ class FileServerI(monitors.FileServer):
         """
         try:
             pathString = self._getPathString(fileId)
-        except Exception, e:
+        except Exception as e:
             self.log.error('File ID  ' + str(fileId) + ' not on this FSServer')
             raise omero.OmeroFSError(
                 reason='File ID  ' + str(fileId) + ' not on this FSServer')
@@ -530,7 +531,7 @@ class FileServerI(monitors.FileServer):
             file.seek(offset)
             bytes = file.read(size)
             file.close()
-        except Exception, e:
+        except Exception as e:
             self.log.error(
                 'Failed to read data from  ' + str(fileId) + ' : ' + str(e))
             raise omero.OmeroFSError(
@@ -576,7 +577,7 @@ class FileServerI(monitors.FileServer):
         """docstring for _getSHA1"""
         try:
             file = open(pathString, 'rb')
-        except Exception, e:
+        except Exception as e:
             self.log.error(
                 'Failed to open file ' + pathString + ' : ' + str(e))
             raise Exception(
@@ -589,7 +590,7 @@ class FileServerI(monitors.FileServer):
                 while block:
                     digest.update(block)
                     block = file.read(1024)
-            except Exception, e:
+            except Exception as e:
                 self.log.error(
                     'Failed to SHA1 digest file '
                     + pathString + ' : ' + str(e))

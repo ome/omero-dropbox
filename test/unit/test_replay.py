@@ -8,7 +8,9 @@
    Use is subject to license terms supplied in LICENSE.txt
 
 """
+from __future__ import print_function
 
+from builtins import object
 import pytest
 import logging
 
@@ -37,11 +39,11 @@ class TestReplay(object):
 
             def fileset(self, timestamp, data):
                 f = Replay.fileset(self, timestamp, data)
-                print "=" * 80
-                for k, v in f.items():
-                    print k[l:]
+                print("=" * 80)
+                for k, v in list(f.items()):
+                    print(k[l:])
                     for i in v:
-                        print "\t", i[l:]
+                        print("\t", i[l:])
                 return f
         MyReplay(self.dir, source, None).run()
         self.driver.run()

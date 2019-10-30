@@ -7,6 +7,10 @@
     Use is subject to license terms supplied in LICENSE.txt
 
 """
+from __future__ import division
+from builtins import str
+from past.utils import old_div
+from builtins import object
 import logging
 import copy
 import time
@@ -143,7 +147,7 @@ class MyWatchManager(pyinotify.WatchManager):
     log = logging.getLogger("fsserver." + __name__)
 
     def isPathWatched(self, pathString):
-        return pathString in self.watchPaths.keys()
+        return pathString in list(self.watchPaths.keys())
 
     def addBaseWatch(self, path, mask, rec=False, auto_add=False):
         try:
@@ -156,7 +160,7 @@ class MyWatchManager(pyinotify.WatchManager):
             if rec:
                 for d in pathModule.path(path).dirs():
                     self.addWatch(str(d), mask)
-        except Exception, e:
+        except Exception as e:
             self.log.error(
                 'Unable to create base watch on: %s : %s', path, str(e))
             raise e
@@ -176,7 +180,7 @@ class MyWatchManager(pyinotify.WatchManager):
                     self.log.info('Watch added on: %s', path)
                 else:
                     self.log.info('Unable to add watch on: %s', path)
-            except Exception, e:
+            except Exception as e:
                 self.log.error(
                     'Unable to add watch on: %s : %s', path, str(e))
 
@@ -186,13 +190,13 @@ class MyWatchManager(pyinotify.WatchManager):
                 removeDict = {}
                 self.log.info('Trying to remove : %s', path)
                 removeDict[self.watchPaths[path]] = path
-                for d in self.watchPaths.keys():
+                for d in list(self.watchPaths.keys()):
                     if d.find(path + '/') == 0:
                         self.log.info('    ... and : %s', d)
                         removeDict[self.watchPaths[d]] = d
                 res = pyinotify.WatchManager.rm_watch(
-                    self, removeDict.keys(), quiet=False)
-                for wd in res.keys():
+                    self, list(removeDict.keys()), quiet=False)
+                for wd in list(res.keys()):
                     if res[wd]:
                         self.watchPaths.pop(removeDict[wd], True)
                         self.watchParams.pop(removeDict[wd], True)
@@ -201,12 +205,12 @@ class MyWatchManager(pyinotify.WatchManager):
                         self.log.info(
                             'Watch remove failed, wd=%s, on: %s',
                             wd, removeDict[wd])
-            except Exception, e:
+            except Exception as e:
                 self.log.error(
                     'Unable to remove watch on: %s : %s', path, str(e))
 
     def getWatchPaths(self):
-        for (path, wd) in self.watchPaths.items():
+        for (path, wd) in list(self.watchPaths.items()):
             yield (path, wd)
 
 
@@ -246,7 +250,7 @@ class ProcessEvent(pyinotify.ProcessEvent):
             maskname = event.maskname
         except:
             # pyinotify 0.7 or below
-            name = pathModule.path(event.path) / pathModule.path(event.name)
+            name = old_div(pathModule.path(event.path), pathModule.path(event.name))
             maskname = event.event_name
 
         el = []

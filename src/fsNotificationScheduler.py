@@ -7,9 +7,12 @@
     Use is subject to license terms supplied in LICENSE.txt
 
 """
+from future import standard_library
+standard_library.install_aliases()
+from builtins import range
 import logging
 import threading
-import Queue
+import queue
 import time
 
 
@@ -19,7 +22,7 @@ class NotificationScheduler(threading.Thread):
         threading.Thread.__init__(self)
         self.log = logging.getLogger("fsclient." + __name__)
         # infinite queue for first test
-        self.queue = Queue.Queue(0)
+        self.queue = queue.Queue(0)
         self.event = threading.Event()
         self.proxy = proxy
         self.monitorId = monitorId
