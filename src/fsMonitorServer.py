@@ -8,6 +8,7 @@
 
 """
 from builtins import str
+from future.utils import native_str, bytes_to_native_str
 import logging
 
 import uuid
@@ -243,7 +244,8 @@ class MonitorServerI(monitors.MonitorServer):
 
         eventList = []
         for fileEvent in fileList:
-            info = monitors.EventInfo(fileEvent[0], fileEvent[1])
+            fileId = bytes_to_native_str(fileEvent[0])
+            info = monitors.EventInfo(fileId, fileEvent[1])
             eventList.append(info)
 
         proxy = self.proxies[monitorId]
@@ -251,7 +253,7 @@ class MonitorServerI(monitors.MonitorServer):
         try:
             self.log.info('Event notification on monitor id= %s', monitorId)
             self.log.debug(' ...notifications are: %s', str(eventList))
-            proxy.fsEventHappened(monitorId, eventList)
+            proxy.fsEventHappened(native_str(monitorId), eventList)
         except Exception as e:
             self.log.info(
                 'Callback to monitor id=' + monitorId
