@@ -19,6 +19,15 @@ import omero.all
 import omero.grid.monitors as monitors
 
 
+class NativeKeyDict(dict):
+
+    def __getitem__(self, key):
+        return dict.__getitem__(self, native_str(key))
+
+    def __setitem__(self, key, val):
+        return dict.__setitem__(self, native_str(key), val)mport omero.grid.monitors as monitors
+
+
 class MonitorServerI(monitors.MonitorServer):
 
     """
@@ -43,7 +52,7 @@ class MonitorServerI(monitors.MonitorServer):
         #: Numerical component of a Monitor Id
         self.monitorId = 0
         #: Dictionary of Monitors by Id
-        self.monitors = {}
+        self.monitors = NativeKeyDict()
         #: Dictionary of MonitorClientI proxies by Id
         self.proxies = {}
 
