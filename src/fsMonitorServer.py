@@ -8,6 +8,7 @@
 
 """
 from builtins import str
+from future.utils import native_str, bytes_to_native_str
 import logging
 
 import uuid
@@ -16,6 +17,15 @@ from fsMonitor import MonitorFactory
 
 import omero.all
 import omero.grid.monitors as monitors
+
+
+class NativeKeyDict(dict):
+
+    def __getitem__(self, key):
+        return dict.__getitem__(self, native_str(key))
+
+    def __setitem__(self, key, val):
+        return dict.__setitem__(self, native_str(key), val)mport omero.grid.monitors as monitors
 
 
 class MonitorServerI(monitors.MonitorServer):
@@ -42,7 +52,7 @@ class MonitorServerI(monitors.MonitorServer):
         #: Numerical component of a Monitor Id
         self.monitorId = 0
         #: Dictionary of Monitors by Id
-        self.monitors = {}
+        self.monitors = NativeKeyDict()
         #: Dictionary of MonitorClientI proxies by Id
         self.proxies = {}
 
@@ -243,7 +253,8 @@ class MonitorServerI(monitors.MonitorServer):
 
         eventList = []
         for fileEvent in fileList:
-            info = monitors.EventInfo(fileEvent[0], fileEvent[1])
+            fileId = bytes_to_native_str(fileEvent[0])
+            info = monitors.EventInfo(fileId, fileEvent[1])
             eventList.append(info)
 
         proxy = self.proxies[monitorId]
@@ -251,7 +262,7 @@ class MonitorServerI(monitors.MonitorServer):
         try:
             self.log.info('Event notification on monitor id= %s', monitorId)
             self.log.debug(' ...notifications are: %s', str(eventList))
-            proxy.fsEventHappened(monitorId, eventList)
+            proxy.fsEventHappened(native_str(monitorId), eventList)
         except Exception as e:
             self.log.info(
                 'Callback to monitor id=' + monitorId

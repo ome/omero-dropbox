@@ -259,10 +259,10 @@ class ProcessEvent(pyinotify.ProcessEvent):
         # It seems to happen when inotify isn't sure of the path. Yet all the
         # events seem to have otherwise good paths. So, remove the suffix and
         # allow the event to be dealt with as normal.
-        if name.find('-unknown-path') > 0:
+        if name.find(b'-unknown-path') > 0:
             self.log.debug(
                 'Event with "-unknown-path" of type %s : %s', maskname, name)
-            name = name.replace('-unknown-path', '')
+            name = name.replace(b'-unknown-path', b'')
 
         # New directory within watch area,
         # either created, moved in or modfied attributes, ie now readable.
@@ -272,7 +272,7 @@ class ProcessEvent(pyinotify.ProcessEvent):
             self.log.info(
                 'New directory event of type %s at: %s', maskname, name)
             if "Creation" in self.et:
-                if name.find('untitled folder') == -1:
+                if name.find(b'untitled folder') == -1:
                     if not self.ignoreDirEvents:
                         el.append((name, monitors.EventType.Create))
                     else:
@@ -339,7 +339,7 @@ class ProcessEvent(pyinotify.ProcessEvent):
             self.log.info(
                 'Deleted directory event of type %s at: %s', maskname, name)
             if "Deletion" in self.et:
-                if name.find('untitled folder') == -1:
+                if name.find(b'untitled folder') == -1:
                     if not self.ignoreDirEvents:
                         el.append((name, monitors.EventType.Delete))
                     else:
