@@ -1,3 +1,7 @@
+# 5.6.dev3 (November 2019)
+
+- Fix import of external path module (#77)
+
 # 5.6.dev2 (November 2019)
 
 - Unicode/bytes fixes (#7)
