@@ -16,7 +16,11 @@ import logging
 
 from drivers import MockMonitor, Replay, with_driver
 
-from path import path
+try:
+    from omero_ext.path import path
+except ImportError:
+    # Python 2
+    from path import path
 
 logging.basicConfig(level=logging.WARN)
 

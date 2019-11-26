@@ -18,7 +18,11 @@ from builtins import object
 import omero.grid.monitors as monitors
 import uuid
 
-from path import path
+try:
+    from omero_ext.path import path
+except ImportError:
+    # Python 2
+    from path import path
 from omero.util.temp_files import create_path
 from drivers import CallbackEvent, InfoEvent, DirInfoEvent
 from drivers import MockMonitor, Driver, Simulator

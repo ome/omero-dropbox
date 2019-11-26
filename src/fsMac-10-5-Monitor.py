@@ -19,7 +19,11 @@ import FSEvents
 # Third party path package. It provides much of the
 # functionality of os.path but without the complexity.
 # Imported as pathModule to avoid potential clashes.
-import path as pathModule
+try:
+    from omero_ext.path import path as pathModule
+except ImportError:
+    # Python 2
+    from path import path as pathModule
 
 __import__("omero.all")
 import omero.grid.monitors as monitors
