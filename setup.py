@@ -42,7 +42,7 @@ setup(name="omero-dropbox",
         'or later (GPLv2+)',
         'Natural Language :: English',
         'Operating System :: OS Independent',
-        'Programming Language :: Python :: 2',
+        'Programming Language :: Python :: 3',
         'Topic :: Software Development :: Libraries :: Python Modules',
       ],  # Get strings from
           # http://pypi.python.org/pypi?%3Aaction=list_classifiers
@@ -54,4 +54,5 @@ setup(name="omero-dropbox",
       install_requires=[
           "omero-py>=5.6.dev6",  # requires Ice (use wheel for faster installs)
       ],
+      python_requires='>=3',
       tests_require=['pytest'])
