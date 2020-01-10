@@ -50,7 +50,7 @@ OMERO.dropbox is released under the GPL v2.
 Copyright
 ---------
 
-2009-2019, The Open Microscopy Environment, Glencoe Software, Inc.
+2009-2020, The Open Microscopy Environment, Glencoe Software, Inc.
 
 .. _OMERO: https://www.openmicroscopy.org/omero
 .. _OMERO.py: https://pypi.python.org/pypi/omero-py

@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-   Copyright 2008-2019 The Open Microscopy Environment, Glencoe Software, Inc.
+   Copyright 2008-2020 The Open Microscopy Environment, Glencoe Software, Inc.
    All rights reserved.
 
    Use is subject to license terms supplied in LICENSE.txt
@@ -14,7 +14,7 @@ import os
 
 from setuptools import setup
 
-VERSION = "5.6.dev4"
+VERSION = "5.6.0"
 
 url = 'https://docs.openmicroscopy.org/latest/omero/developers/Server/FS.html'
 
@@ -42,7 +42,7 @@ setup(name="omero-dropbox",
         'or later (GPLv2+)',
         'Natural Language :: English',
         'Operating System :: OS Independent',
-        'Programming Language :: Python :: 2',
+        'Programming Language :: Python :: 3',
         'Topic :: Software Development :: Libraries :: Python Modules',
       ],  # Get strings from
           # http://pypi.python.org/pypi?%3Aaction=list_classifiers
@@ -52,6 +52,7 @@ setup(name="omero-dropbox",
       package_dir={"": "src"},
       py_modules=packageless,
       install_requires=[
-          "omero-py>=5.6.dev6",  # requires Ice (use wheel for faster installs)
+          "omero-py",  # requires Ice (use wheel for faster installs)
       ],
+      python_requires='>=3',
       tests_require=['pytest'])
