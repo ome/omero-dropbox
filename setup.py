@@ -52,7 +52,7 @@ setup(name="omero-dropbox",
       package_dir={"": "src"},
       py_modules=packageless,
       install_requires=[
-          "omero-py>=5.6.dev6",  # requires Ice (use wheel for faster installs)
+          "omero-py",  # requires Ice (use wheel for faster installs)
       ],
       python_requires='>=3',
       tests_require=['pytest'])
