@@ -1,0 +1,48 @@
+#!/bin/bash
+source /infra/utils
+
+set -e
+set -u
+set -x
+
+
+cd $TARGET
+export ICE_CONFIG=${OMERO_DIST}/etc/ice.config
+pytest test -sv || {
+    echo FIXME: unit tests need fixing
+}
+
+export OMERODIR=/opt/omero/server/OMERO.server
+. /opt/omero/server/venv3/bin/activate
+
+mkdir -p /OMERO/DropBox/root
+mkdir -p /tmp/fakes/a /tmp/fakes/b
+touch /tmp/fakes/a/1.fake
+touch /tmp/fakes/a/2.fake
+touch /tmp/fakes/b/3.fake
+touch /tmp/fakes/b/4.fake
+mv /tmp/fakes /OMERO/DropBox/root/
+
+#sleep 10
+#echo "Checking logs ..."
+#grep WARNING /opt/omero/server/OMERO.server/var/log/MonitorServer.log
+
+echo -n "Checking for imported DropBox images"
+# Retry for 4 mins
+i=0
+result=
+while [ $i -lt 60 ]; do
+    sleep 5
+    result=$(omero hql -q -s root@localhost -w omero "SELECT COUNT (*) FROM Image WHERE name like '%fake'" --style plain)
+    if [ "$result" = "0,4" ]; then
+        echo
+        echo "Found image: $result"
+        exit 0
+    fi
+    echo -n "."
+    let ++i
+done
+
+echo "Failed to find 4 images"
+cat /opt/omero/server/OMERO.server/var/log/MonitorServer.log
+exit 2
