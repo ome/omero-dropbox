@@ -19,10 +19,10 @@ import threading
 import queue
 import time
 try:
-    from omero_ext.path import path as pathModule
+    from omero_ext import path as pathModule
 except ImportError:
     # Python 2
-    from path import path as pathModule
+    import path as pathModule
 
 import omero
 import omero.cli
