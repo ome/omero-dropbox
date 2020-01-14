@@ -8,7 +8,7 @@
 
 """
 from __future__ import division
-from future.utils import bytes_to_native_str
+from future.utils import bytes_to_native_str, isbytes
 from builtins import str
 from past.utils import old_div
 from builtins import object
@@ -173,13 +173,17 @@ class MyWatchManager(pyinotify.WatchManager):
     def addWatch(self, path, mask):
         if not self.isPathWatched(path):
             try:
+                if isbytes(path):
+                    path_obj = pathModule.path(bytes_to_native_str(path))
+                else:
+                    path_obj = pathModule.path(path)
                 res = pyinotify.WatchManager.add_watch(
                     self, path, mask, rec=False, auto_add=False, quiet=False)
                 self.watchPaths.update(res)
                 self.watchParams[path] = copy.copy(
-                    self.watchParams[pathModule.path(path).parent])
+                    self.watchParams[path_obj.parent])
                 if self.watchParams[path].getRec():
-                    for d in pathModule.path(path).dirs():
+                    for d in path_obj.dirs():
                         self.addWatch(str(d), mask)
                 if self.isPathWatched(path):
                     self.log.info('Watch added on: %s', path)
