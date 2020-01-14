@@ -8,6 +8,7 @@
 
 """
 from __future__ import division
+from future.utils import bytes_to_native_str
 from builtins import str
 from past.utils import old_div
 from builtins import object
@@ -270,6 +271,7 @@ class ProcessEvent(pyinotify.ProcessEvent):
 
         # New directory within watch area,
         # either created, moved in or modfied attributes, ie now readable.
+        path_name = pathModule.path(bytes_to_native_str(name))
         if (event.mask == (pyinotify.IN_CREATE | pyinotify.IN_ISDIR)
                 or event.mask == (pyinotify.IN_MOVED_TO | pyinotify.IN_ISDIR)
                 or event.mask == (pyinotify.IN_ATTRIB | pyinotify.IN_ISDIR)):
@@ -283,15 +285,14 @@ class ProcessEvent(pyinotify.ProcessEvent):
                         self.log.info('Not propagated.')
                     # Handle the recursion plus create any potentially missed
                     # Create events
-                    if self.wm.watchParams[
-                            pathModule.path(name).parent].getAutoAdd():
+                    if self.wm.watchParams[path_name.parent].getAutoAdd():
                         self.wm.addWatch(
                             name, self.wm.watchParams[
-                                pathModule.path(name).parent].getMask())
+                                path_name.parent].getMask())
                         if self.wm.isPathWatched(name):
                             if self.wm.watchParams[
-                                    pathModule.path(name).parent].getRec():
-                                for d in pathModule.path(name).walkdirs(
+                                    path_name.parent].getRec():
+                                for d in path_name.walkdirs(
                                         errors='warn'):
                                     self.log.info(
                                         ('NON-INOTIFY event: '
@@ -305,9 +306,8 @@ class ProcessEvent(pyinotify.ProcessEvent):
                                         self.log.info('Not propagated.')
                                     self.wm.addWatch(
                                         str(d), self.wm.watchParams[
-                                            pathModule.path(
-                                                name).parent].getMask())
-                                for f in pathModule.path(name).walkfiles(
+                                            path_name.parent].getMask())
+                                for f in path_name.walkfiles(
                                         errors='warn'):
                                     self.log.info(
                                         'NON-INOTIFY event: New file at: %s',
@@ -315,7 +315,7 @@ class ProcessEvent(pyinotify.ProcessEvent):
                                     el.append(
                                         (str(f), monitors.EventType.Create))
                             else:
-                                for d in pathModule.path(name).dirs():
+                                for d in path_name.dirs():
                                     self.log.info(
                                         ('NON-INOTIFY event: '
                                          'New directory at: %s'),
@@ -326,7 +326,7 @@ class ProcessEvent(pyinotify.ProcessEvent):
                                             monitors.EventType.Create))
                                     else:
                                         self.log.info('Not propagated.')
-                                for f in pathModule.path(name).files():
+                                for f in path_name.files():
                                     self.log.info(
                                         'NON-INOTIFY event: New file at: %s',
                                         str(f))
