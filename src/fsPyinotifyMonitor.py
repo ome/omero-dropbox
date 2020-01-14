@@ -16,12 +16,14 @@ import logging
 import copy
 import time
 
-__import__("omero.all")
+__import__("omero.all")  # noqa
 import omero.grid.monitors as monitors
 from fsAbstractPlatformMonitor import AbstractPlatformMonitor
 
-importlog = logging.getLogger("fsserver." + __name__)
 from omero_ext import pyinotify
+
+
+importlog = logging.getLogger("fsserver." + __name__)
 importlog.info("Imported pyinotify version %s", str(pyinotify.__version__))
 
 # Third party path package. It provides much of the
