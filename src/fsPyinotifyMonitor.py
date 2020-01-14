@@ -16,6 +16,14 @@ import logging
 import copy
 import time
 
+__import__("omero.all")
+import omero.grid.monitors as monitors
+from fsAbstractPlatformMonitor import AbstractPlatformMonitor
+
+importlog = logging.getLogger("fsserver." + __name__)
+from omero_ext import pyinotify
+importlog.info("Imported pyinotify version %s", str(pyinotify.__version__))
+
 # Third party path package. It provides much of the
 # functionality of os.path but without the complexity.
 # Imported as pathModule to avoid potential clashes.
@@ -24,14 +32,6 @@ try:
 except ImportError:
     # Python 2
     import path as pathModule
-
-__import__("omero.all")
-import omero.grid.monitors as monitors
-from fsAbstractPlatformMonitor import AbstractPlatformMonitor
-
-importlog = logging.getLogger("fsserver." + __name__)
-from omero_ext import pyinotify
-importlog.info("Imported pyinotify version %s", str(pyinotify.__version__))
 
 
 class PlatformMonitor(AbstractPlatformMonitor):
@@ -103,7 +103,7 @@ class PlatformMonitor(AbstractPlatformMonitor):
                 auto_add=follow)
             self.log.info('Monitor set-up on %s', str(self.pathsToMonitor))
             self.log.info('Monitoring %s events', str(self.eTypes))
-        except:
+        except Exception:
             self.log.error('Monitor failed on: %s', str(self.pathsToMonitor))
 
     def start(self):
@@ -253,9 +253,10 @@ class ProcessEvent(pyinotify.ProcessEvent):
             # pyinotify 0.8
             name = event.pathname
             maskname = event.maskname
-        except:
+        except Exception:
             # pyinotify 0.7 or below
-            name = old_div(pathModule.path(event.path), pathModule.path(event.name))
+            name = old_div(pathModule.path(event.path),
+                           pathModule.path(event.name))
             maskname = event.event_name
 
         el = []
@@ -478,8 +479,8 @@ if __name__ == "__main__":
     m = PlatformMonitor(
         [monitors.WatchEventType.Creation,
          monitors.WatchEventType.Modification],
-        monitors.PathMode.Follow, "\OMERO\DropBox", [], [], True, True, p)
+        monitors.PathMode.Follow, r"\OMERO\DropBox", [], [], True, True, p)
     try:
         m.start()
-    except:
+    except Exception:
         m.stop()
