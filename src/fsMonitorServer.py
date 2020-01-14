@@ -14,18 +14,10 @@ import logging
 import uuid
 
 from fsMonitor import MonitorFactory
+from fsUtil import NativeKeyDict
 
 import omero.all
 import omero.grid.monitors as monitors
-
-
-class NativeKeyDict(dict):
-
-    def __getitem__(self, key):
-        return dict.__getitem__(self, native_str(key))
-
-    def __setitem__(self, key, val):
-        return dict.__setitem__(self, native_str(key), val)
 
 
 class MonitorServerI(monitors.MonitorServer):

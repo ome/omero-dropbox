@@ -19,6 +19,7 @@ import time
 __import__("omero.all")  # noqa
 import omero.grid.monitors as monitors
 from fsAbstractPlatformMonitor import AbstractPlatformMonitor
+from fsUtil import NativeKeyDict
 
 from omero_ext import pyinotify
 
@@ -149,8 +150,8 @@ class MyWatchManager(pyinotify.WatchManager):
        may need to be fixed for applications outside of DropBox.
 
     """
-    watchPaths = {}
-    watchParams = {}
+    watchPaths = NativeKeyDict()
+    watchParams = NativeKeyDict()
     log = logging.getLogger("fsserver." + __name__)
 
     def isPathWatched(self, pathString):
