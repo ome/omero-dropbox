@@ -25,7 +25,7 @@ class NativeKeyDict(dict):
         return dict.__getitem__(self, native_str(key))
 
     def __setitem__(self, key, val):
-        return dict.__setitem__(self, native_str(key), val)mport omero.grid.monitors as monitors
+        return dict.__setitem__(self, native_str(key), val)
 
 
 class MonitorServerI(monitors.MonitorServer):
