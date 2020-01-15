@@ -70,7 +70,7 @@ class AbstractPlatformMonitor(threading.Thread):
         """
         if len(eventList) > 0:
             try:
-                self.log.info('Event notification : %s', str(eventList))
+                self.log.info('Event notification : %s' % eventList)
                 self.proxy.callback(eventList)
             except:
                 self.log.exception("Notification failed : ")

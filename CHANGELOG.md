@@ -1,3 +1,8 @@
+# 5.6.1 (January 2020)
+
+- Fix bytes issues ([#12](https://github.com/ome/omero-dropbox/pull/12))
+- Fix import issues ([#11](https://github.com/ome/omero-dropbox/pull/11))
+
 # 5.6.0 (January 2020)
 
 - Require Python 3 ([#10](https://github.com/ome/omero-dropbox/pull/10))

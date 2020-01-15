@@ -1,0 +1,14 @@
+#!/bin/bash
+source /infra/utils
+
+set -e
+set -u
+set -x
+
+TARGET=${TARGET:-..}
+
+cd $TARGET
+flake8 -v . || {
+    echo FIXME: skipping failure on flake8
+}
+rst-lint README.rst

@@ -8,24 +8,16 @@
 
 """
 from builtins import str
-from future.utils import native_str, bytes_to_native_str
+from future.utils import native_str, bytes_to_native_str, isbytes
 import logging
 
 import uuid
 
 from fsMonitor import MonitorFactory
+from fsUtil import NativeKeyDict
 
 import omero.all
 import omero.grid.monitors as monitors
-
-
-class NativeKeyDict(dict):
-
-    def __getitem__(self, key):
-        return dict.__getitem__(self, native_str(key))
-
-    def __setitem__(self, key, val):
-        return dict.__setitem__(self, native_str(key), val)
 
 
 class MonitorServerI(monitors.MonitorServer):
@@ -253,7 +245,9 @@ class MonitorServerI(monitors.MonitorServer):
 
         eventList = []
         for fileEvent in fileList:
-            fileId = bytes_to_native_str(fileEvent[0])
+            fileId = fileEvent[0]
+            if isbytes(fileId):
+                fileId = bytes_to_native_str(fileId)
             info = monitors.EventInfo(fileId, fileEvent[1])
             eventList.append(info)
 
