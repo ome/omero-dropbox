@@ -32,7 +32,7 @@ script:
       pip install dist/omero-dropbox*gz
       omero version
     elif [ "$TOX" = "infra" ]; then
-      .omero/docker scripts
+        echo DISABLED: .omero/docker scripts
     else
       tox -e $TOX
     fi
