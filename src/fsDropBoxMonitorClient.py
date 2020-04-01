@@ -624,6 +624,8 @@ class MonitorClientI(monitors.MonitorClient):
             throwing an exception if necessary.
         """
 
+        t = None
+        to = None
         try:
             self.state.appropriateWait(self.throttleImport)  # See ticket:5739
 
@@ -681,8 +683,12 @@ class MonitorClientI(monitors.MonitorClient):
                     self.log.error("%s not found !" % t)
                 self.log.error("***** end of output from importer-cli *****")
         finally:
-            remove_path(t)
-            remove_path(to)
+            for x in (t, to):
+                if x:
+                    try:
+                        remove_path(x)
+                    except Exception as e:
+                        self.log.error("failed to remove %s: %s" % (x, e))
 
         return imageId
 
