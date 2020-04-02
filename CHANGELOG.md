@@ -1,3 +1,7 @@
+# 5.6.2 (March 2020)
+
+- Fix file closing ([#15](https://github.com/ome/omero-dropbox/pull/15))
+
 # 5.6.1 (January 2020)
 
 - Fix bytes issues ([#12](https://github.com/ome/omero-dropbox/pull/12))
