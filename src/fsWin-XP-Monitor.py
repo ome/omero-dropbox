@@ -41,7 +41,7 @@ class PlatformMonitor(AbstractPlatformMonitor):
 
     """
 
-    def __init__(self, eventTypes, pathMode, pathString, whitelist, blacklist,
+    def __init__(self, eventTypes, pathMode, pathString, allowlist, blocklist,
                  ignoreSysFiles, ignoreDirEvents, proxy):
         """
             Set-up Monitor thread.
@@ -60,10 +60,10 @@ class PlatformMonitor(AbstractPlatformMonitor):
                 pathString : string
                     A string representing a path to be monitored.
 
-                whitelist : list<string>
+                allowlist : list<string>
                     A list of files and extensions of interest.
 
-                blacklist : list<string>
+                blocklist : list<string>
                     A list of subdirectories to be excluded.
 
                 ignoreSysFiles :
@@ -76,7 +76,7 @@ class PlatformMonitor(AbstractPlatformMonitor):
                     A proxy to be informed of events
         """
         AbstractPlatformMonitor.__init__(
-            self, eventTypes, pathMode, pathString, whitelist, blacklist,
+            self, eventTypes, pathMode, pathString, allowlist, blocklist,
             ignoreSysFiles, ignoreDirEvents, proxy)
         self.log = logging.getLogger("fsserver." + __name__)
 
@@ -168,9 +168,9 @@ class PlatformMonitor(AbstractPlatformMonitor):
                                     eventType = self.actions[action]
                                     # Should have richer filename matching
                                     # here.
-                                    if (len(self.whitelist) == 0
+                                    if (len(self.allowlist) == 0
                                             or pathModule.path(filename).ext
-                                            in self.whitelist):
+                                            in self.allowlist):
                                         eventList.append(
                                             (filename.replace(
                                                 '\\\\', '\\').replace(
@@ -189,9 +189,9 @@ class PlatformMonitor(AbstractPlatformMonitor):
                                     eventType = self.actions[action]
                                     # Should have richer filename matching
                                     # here.
-                                    if (len(self.whitelist) == 0
+                                    if (len(self.allowlist) == 0
                                             or pathModule.path(filename).ext
-                                            in self.whitelist):
+                                            in self.allowlist):
                                         eventList.append(
                                             (filename.replace(
                                                 '\\\\', '\\').replace(
@@ -210,9 +210,9 @@ class PlatformMonitor(AbstractPlatformMonitor):
                                     eventType = self.actions[action]
                                     # Should have richer filename matching
                                     # here.
-                                    if (len(self.whitelist) == 0
+                                    if (len(self.allowlist) == 0
                                             or pathModule.path(filename).ext
-                                            in self.whitelist):
+                                            in self.allowlist):
                                         eventList.append(
                                             (filename.replace(
                                                 '\\\\', '\\').replace(

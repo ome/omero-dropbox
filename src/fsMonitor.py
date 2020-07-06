@@ -19,25 +19,25 @@ import omero.grid.monitors as monitors
 class MonitorFactory(object):
 
     @staticmethod
-    def createMonitor(mType, eTypes, pMode, pathString, whitelist, blacklist,
+    def createMonitor(mType, eTypes, pMode, pathString, allowlist, blocklist,
                       timeout, blockSize, ignoreSysFiles, ignoreDirEvents,
                       platformCheck, proxy, monitorId):
 
         if str(mType) == 'Persistent':
             return PersistentMonitor(
-                eTypes, pMode, pathString, whitelist, blacklist, timeout,
+                eTypes, pMode, pathString, allowlist, blocklist, timeout,
                 blockSize, ignoreSysFiles, ignoreDirEvents, platformCheck,
                 proxy, monitorId)
 
         elif str(mType) == 'OneShot':
             return OneShotMonitor(
-                eTypes, pMode, pathString, whitelist, blacklist, timeout,
+                eTypes, pMode, pathString, allowlist, blocklist, timeout,
                 ignoreSysFiles, ignoreDirEvents, platformCheck, proxy,
                 monitorId)
 
         elif str(mType) == 'Inactivity':
             return InactivityMonitor(
-                eTypes, pMode, pathString, whitelist, blacklist, timeout,
+                eTypes, pMode, pathString, allowlist, blocklist, timeout,
                 ignoreSysFiles, ignoreDirEvents, platformCheck, proxy,
                 monitorId)
 
@@ -55,7 +55,7 @@ class AbstractMonitor(object):
 
     """
 
-    def __init__(self, eventTypes, pathMode, pathString, whitelist, blacklist,
+    def __init__(self, eventTypes, pathMode, pathString, allowlist, blocklist,
                  ignoreSysFiles, ignoreDirEvents, platformCheck, proxy,
                  monitorId):
         """
@@ -71,7 +71,7 @@ class AbstractMonitor(object):
         self.proxy = proxy
         self.monitorId = monitorId
         self.pMonitor = PlatformMonitor.PlatformMonitor(
-            eventTypes, pathMode, pathString, whitelist, blacklist,
+            eventTypes, pathMode, pathString, allowlist, blocklist,
             ignoreSysFiles, ignoreDirEvents, self)
 
     def start(self):
@@ -126,7 +126,7 @@ class PersistentMonitor(AbstractMonitor):
 
     """
 
-    def __init__(self, eventTypes, pathMode, pathString, whitelist, blacklist,
+    def __init__(self, eventTypes, pathMode, pathString, allowlist, blocklist,
                  timeout, blockSize, ignoreSysFiles, ignoreDirEvents,
                  platformCheck, proxy, monitorId):
         """
@@ -134,7 +134,7 @@ class PersistentMonitor(AbstractMonitor):
 
         """
         AbstractMonitor.__init__(
-            self, eventTypes, pathMode, pathString, whitelist, blacklist,
+            self, eventTypes, pathMode, pathString, allowlist, blocklist,
             ignoreSysFiles, ignoreDirEvents, platformCheck, proxy, monitorId)
 
         self.notifier = NotificationScheduler(
@@ -184,7 +184,7 @@ class InactivityMonitor(AbstractMonitor):
 
     """
 
-    def __init__(self, eventTypes, pathMode, pathString, whitelist, blacklist,
+    def __init__(self, eventTypes, pathMode, pathString, allowlist, blocklist,
                  timeout, ignoreSysFiles, ignoreDirEvents, platformCheck,
                  proxy, monitorId):
         """
@@ -192,7 +192,7 @@ class InactivityMonitor(AbstractMonitor):
 
         """
         AbstractMonitor.__init__(
-            self, eventTypes, pathMode, pathString, whitelist, blacklist,
+            self, eventTypes, pathMode, pathString, allowlist, blocklist,
             ignoreSysFiles, ignoreDirEvents, platformCheck, proxy, monitorId)
         self.timer = threading.Timer(timeout, self.inactive)
         self.log.info('Inactivity monitor created. Timer: %s', str(self.timer))
@@ -258,7 +258,7 @@ class OneShotMonitor(AbstractMonitor):
 
     """
 
-    def __init__(self, eventTypes, pathMode, pathString, whitelist, blacklist,
+    def __init__(self, eventTypes, pathMode, pathString, allowlist, blocklist,
                  timeout, ignoreSysFiles, ignoreDirEvents, platformCheck,
                  proxy, monitorId):
         """
@@ -266,7 +266,7 @@ class OneShotMonitor(AbstractMonitor):
 
         """
         AbstractMonitor.__init__(
-            self, eventTypes, pathMode, pathString, whitelist, blacklist,
+            self, eventTypes, pathMode, pathString, allowlist, blocklist,
             ignoreSysFiles, ignoreDirEvents, platformCheck, proxy, monitorId)
         self.timer = threading.Timer(timeout, self.inactive)
         self.log.info('OneShot monitor created. Timer: %s', str(self.timer))
