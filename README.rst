@@ -1,6 +1,11 @@
 OMERO.dropbox
 =============
 
+.. image:: https://github.com/ome/omero-dropbox/workflows/OMERO/badge.svg
+   :target: https://github.com/ome/omero-dropbox/actions
+.. image:: https://github.com/ome/omero-dropbox/workflows/Tox/badge.svg
+   :target: https://github.com/ome/omero-dropbox/actions
+
 Introduction
 ------------
 
