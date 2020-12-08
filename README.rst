@@ -5,6 +5,8 @@ OMERO.dropbox
    :target: https://github.com/ome/omero-dropbox/actions
 .. image:: https://github.com/ome/omero-dropbox/workflows/Tox/badge.svg
    :target: https://github.com/ome/omero-dropbox/actions
+.. image:: https://github.com/ome/omero-dropbox/workflows/PyPI/badge.svg
+   :target: https://github.com/ome/omero-dropbox/actions
 
 Introduction
 ------------
