@@ -44,28 +44,24 @@ def clearcb(log, state, key):
 class TestState(object):
 
     def setup_method(self, method):
-        self.s = fsDBMC.MonitorState()
+        self.s = fsDBMC.MonitorState(None)
         self.log = logging.getLogger(make_logname(self))
 
     def teardown_method(self, method):
         self.s.stop()
 
-    @pytest.mark.broken(ticket="12566")
     def testEmpty(self):
         self.s.update({}, 0, nullcb)
 
-    @pytest.mark.broken(ticket="12566")
     def testSimple(self):
         self.s.update({'file1': ['file1', 'file2']}, 0, nullcb)
 
-    @pytest.mark.broken(ticket="12566")
     def testTimerCalled(self):
         l = []
         self.s.update({'file1': ['file1', 'file2']}, 0, listcb(l))
         time.sleep(0.25)
         assert 1 == len(l)
 
-    @pytest.mark.broken(ticket="12566")
     def testMultipleInsert(self):
         l = []
         m = {
@@ -77,7 +73,6 @@ class TestState(object):
         time.sleep(0.25)
         assert 1 == len(l)
 
-    @pytest.mark.broken(ticket="12566")
     def testAddThenReAdd(self):
         l = []
         self.s.update({'file1': ['file1', 'file2']}, 0.1, listcb(l))
@@ -85,7 +80,6 @@ class TestState(object):
         time.sleep(0.25)
         assert 1 == len(l)
 
-    @pytest.mark.broken(ticket="12566")
     def testAddThenModify(self):
         l = []
         self.s.update({'file1': ['file1', 'file2']}, 0.1, listcb(l))
@@ -93,17 +87,15 @@ class TestState(object):
         time.sleep(0.25)
         assert 1 == len(l)
 
-    @pytest.mark.broken(ticket="12566")
     def testEntryMoved1(self):
         l = []
         self.s.update({'file1': ['file1']}, 0.1, listcb(l))
-        assert 1 == list(self.s.keys())
+        assert 1 == len(list(self.s.keys()))
         self.s.update({'file2': ['file1', 'file2']}, 0.1, listcb(l))
-        assert 2 == list(self.s.keys())
+        assert 2 == len(list(self.s.keys()))
         time.sleep(0.25)
         assert 1 == len(l)
 
-    @pytest.mark.broken(ticket="12566")
     def testEntryMoved2(self):
         self.s.update(
             {'file1': ['file1']}, 0.1, clearcb(self.log, self.s, 'file1'))
@@ -118,7 +110,6 @@ class TestState(object):
         assert 0 == len(list(self.s.keys()))
         assert 0 == self.s.count()
 
-    @pytest.mark.broken(ticket="12566")
     def testEntryOutOfSyncSubsume(self):
         self.s.update({'file1': ['file1']}, 0.1, nullcb)
         assert 1 == len(list(self.s.keys()))
@@ -127,7 +118,6 @@ class TestState(object):
         self.s.update({'file2': ['file1', 'file2']}, 0.1, nullcb)
         assert 2 == len(list(self.s.keys()))
 
-    @pytest.mark.broken(ticket="12566")
     def testEntryOutOfSyncSteal(self):
         self.s.update({'file1': ['file1', 'file3']}, 0.1, nullcb)
         assert 2 == len(list(self.s.keys()))

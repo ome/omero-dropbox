@@ -41,17 +41,17 @@ class TestMonitor(object):
     def testEmptyAdd(self):
         MockMonitor().fsEventHappened('', [])  # Does nothing.
 
-    @pytest.mark.broken(ticket="12566")
     @with_driver
-    def testBasicAdd(self):
+    def testBasicAdd(self, mocker):
+        mocker.patch.object(self.client.ctx,'newSession', autospec=True)
         self.driver.add(DirInfoEvent(1, monitors.EventInfo(
             self.dir / "root" / "dirtimeout",
             monitors.EventType.Create)))
         self.driver.run()
 
-    @pytest.mark.broken(ticket="12566")
     @with_driver
-    def testWithSingleImport(self):
+    def testWithSingleImport(self, mocker):
+        mocker.patch.object(self.client.ctx,'newSession', autospec=True)
         f = self.dir / "root" / "file"
         self.client.files = {str(f): [str(f)]}
         self.driver.add(DirInfoEvent(0, monitors.EventInfo(
@@ -59,9 +59,9 @@ class TestMonitor(object):
         self.driver.run()
         time.sleep(0.25)
 
-    @pytest.mark.broken(ticket="12566")
     @with_driver
-    def testWithMultiImport(self):
+    def testWithMultiImport(self, mocker):
+        mocker.patch.object(self.client.ctx,'newSession', autospec=True)
         f1 = str(self.dir / "root" / "file1")
         f2 = str(self.dir / "root" / "file2")
         f3 = str(self.dir / "root" / "file3")
@@ -79,9 +79,9 @@ class TestMonitor(object):
         time.sleep(1)
         self.driver.run()
 
-    @pytest.mark.broken(ticket="12566")
     @with_driver
-    def testDirectoryInDirectory(self):
+    def testDirectoryInDirectory(self, mocker):
+        mocker.patch.object(self.client.ctx,'newSession', autospec=True)
         self.driver.add(DirInfoEvent(1, monitors.EventInfo(
             self.dir / "root" / "dir", monitors.EventType.Create)))
         self.driver.add(DirInfoEvent(1, monitors.EventInfo(
