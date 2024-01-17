@@ -7,4 +7,3 @@ set -x
 
 cd $TARGET
 echo No-op: scripts could potentially be renamed to "core" or "internal"
-/opt/omero/server/venv3/bin/pip install mox3
