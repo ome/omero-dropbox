@@ -8,7 +8,6 @@
 
 """
 from builtins import str
-from future.utils import native_str
 import logging
 
 import uuid
@@ -256,7 +255,7 @@ class MonitorServerI(monitors.MonitorServer):
         try:
             self.log.info('Event notification on monitor id= %s', monitorId)
             self.log.debug(' ...notifications are: %s', str(eventList))
-            proxy.fsEventHappened(native_str(monitorId), eventList)
+            proxy.fsEventHappened(str(monitorId), eventList)
         except Exception as e:
             self.log.info(
                 'Callback to monitor id=' + monitorId
