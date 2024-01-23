@@ -12,7 +12,6 @@
 
 from builtins import str
 from builtins import range
-from past.utils import old_div
 from builtins import object
 import omero.grid.monitors as monitors
 import uuid
@@ -65,7 +64,7 @@ class TestSimulator(object):
 
     def setup_method(self, method):
         self.uuid = str(uuid.uuid4())
-        self.dir = old_div(create_path(folder=True), self.uuid)
+        self.dir = create_path(folder=True) / self.uuid
         self.dir.makedirs()
         self.sim = Simulator(self.dir)
         self.driver = Driver(self.sim)
@@ -79,7 +78,7 @@ class TestSimulator(object):
             self.driver.errors.pop()
 
     def testRelativeTest(self):
-        assert (old_div(self.dir, "foo")).parpath(self.dir)
+        assert (self.dir / "foo").parpath(self.dir)
         assert (self.dir / "foo" / "bar" / "baz").parpath(self.dir)
         # Not relative
         assert not (path("/")).parpath(self.dir)
@@ -94,78 +93,78 @@ class TestSimulator(object):
 
     def testSimpleCreate(self):
         self.driver.add(InfoEvent(1, monitors.EventInfo(
-            old_div(self.dir, "foo"), monitors.EventType.Create)))
+            self.dir / "foo", monitors.EventType.Create)))
         self.driver.run()
 
     def testBadCreate(self):
         self.driver.add(InfoEvent(1, monitors.EventInfo(
-            old_div(self.dir, "foo"), monitors.EventType.Create)))
+            self.dir / "foo", monitors.EventType.Create)))
         self.driver.add(InfoEvent(1, monitors.EventInfo(
-            old_div(self.dir, "foo"), monitors.EventType.Create)))
+            self.dir / "foo", monitors.EventType.Create)))
         self.driver.run()
         self.assertErrors()
 
     def testBadModify(self):
         self.driver.add(InfoEvent(1, monitors.EventInfo(
-            old_div(self.dir, "foo"), monitors.EventType.Modify)))
+            self.dir / "foo", monitors.EventType.Modify)))
         self.driver.run()
         self.assertErrors()
 
     def testSimpleModify(self):
         self.driver.add(InfoEvent(1, monitors.EventInfo(
-            old_div(self.dir, "foo"), monitors.EventType.Create)))
+            self.dir / "foo", monitors.EventType.Create)))
         self.driver.add(InfoEvent(1, monitors.EventInfo(
-            old_div(self.dir, "foo"), monitors.EventType.Modify)))
+            self.dir / "foo", monitors.EventType.Modify)))
         self.driver.run()
 
     def testBadDelete(self):
         self.driver.add(InfoEvent(1, monitors.EventInfo(
-            old_div(self.dir, "foo"), monitors.EventType.Delete)))
+            self.dir / "foo", monitors.EventType.Delete)))
         self.driver.run()
         self.assertErrors()
 
     def testSimpleDelete(self):
         self.driver.add(InfoEvent(1, monitors.EventInfo(
-            old_div(self.dir, "foo"), monitors.EventType.Create)))
+            self.dir / "foo", monitors.EventType.Create)))
         self.driver.add(InfoEvent(1, monitors.EventInfo(
-            old_div(self.dir, "foo"), monitors.EventType.Delete)))
+            self.dir / "foo", monitors.EventType.Delete)))
         self.driver.run()
 
     def testSimpleDeleteWithModify(self):
         self.driver.add(InfoEvent(1, monitors.EventInfo(
-            old_div(self.dir, "foo"), monitors.EventType.Create)))
+            self.dir / "foo", monitors.EventType.Create)))
         self.driver.add(InfoEvent(1, monitors.EventInfo(
-            old_div(self.dir, "foo"), monitors.EventType.Modify)))
+            self.dir / "foo", monitors.EventType.Modify)))
         self.driver.add(InfoEvent(1, monitors.EventInfo(
-            old_div(self.dir, "foo"), monitors.EventType.Delete)))
+            self.dir / "foo", monitors.EventType.Delete)))
         self.driver.run()
 
     def testDirectoryMethodsInfo(self):
         self.driver.add(InfoEvent(1, monitors.EventInfo(
-            old_div(self.dir, "foo"), monitors.EventType.Create)))
+            self.dir / "foo", monitors.EventType.Create)))
         self.driver.add(InfoEvent(1, monitors.EventInfo(
-            old_div(self.dir, "foo"), monitors.EventType.Modify)))
+            self.dir / "foo", monitors.EventType.Modify)))
         self.driver.add(InfoEvent(1, monitors.EventInfo(
-            old_div(self.dir, "foo"), monitors.EventType.Delete)))
+            self.dir / "foo", monitors.EventType.Delete)))
         self.driver.run()
 
     def testDirectoryMethodsDirInfo(self):
         self.driver.add(DirInfoEvent(1, monitors.EventInfo(
-            old_div(self.dir, "dir"), monitors.EventType.Create)))
+            self.dir / "dir", monitors.EventType.Create)))
         self.driver.add(DirInfoEvent(1, monitors.EventInfo(
-            old_div(self.dir, "dir"), monitors.EventType.Modify)))
+            self.dir / "dir", monitors.EventType.Modify)))
         self.driver.add(DirInfoEvent(1, monitors.EventInfo(
-            old_div(self.dir, "dir"), monitors.EventType.Delete)))
+            self.dir / "dir", monitors.EventType.Delete)))
         self.driver.run()
 
     def testDirectoryDoesntExistOnModify(self):
         self.driver.add(DirInfoEvent(1, monitors.EventInfo(
-            old_div(self.dir, "dir"), monitors.EventType.Modify)))
+            self.dir / "dir", monitors.EventType.Modify)))
         self.driver.run()
         self.assertErrors()
 
     def testDirectoryDoesntExistOnDelete(self):
         self.driver.add(DirInfoEvent(1, monitors.EventInfo(
-            old_div(self.dir, "dir"), monitors.EventType.Delete)))
+            self.dir / "dir", monitors.EventType.Delete)))
         self.driver.run()
         self.assertErrors()

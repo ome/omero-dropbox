@@ -8,7 +8,6 @@
 
 """
 from builtins import str
-from past.utils import old_div
 from builtins import object
 import logging
 import copy
@@ -259,8 +258,8 @@ class ProcessEvent(pyinotify.ProcessEvent):
             maskname = event.maskname
         except Exception:
             # pyinotify 0.7 or below
-            name = old_div(pathModule.path(event.path),
-                           pathModule.path(event.name))
+            name = (pathModule.path(event.path) /
+                pathModule.path(event.name))
             maskname = event.event_name
 
         el = []
