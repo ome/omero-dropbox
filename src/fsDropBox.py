@@ -21,11 +21,7 @@ import uuid
 # Third party path package. It provides much of the
 # functionality of os.path but without the complexity.
 # Imported as pathModule to avoid clashes.
-try:
-    from omero_ext import path as pathModule
-except ImportError:
-    # Python 2
-    import path as pathModule
+from omero_ext import path as pathModule
 
 import omero.all
 import omero.grid.monitors as monitors
