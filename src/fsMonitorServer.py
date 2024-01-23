@@ -8,7 +8,7 @@
 
 """
 from builtins import str
-from future.utils import native_str, bytes_to_native_str, isbytes
+from future.utils import native_str
 import logging
 
 import uuid
@@ -246,8 +246,8 @@ class MonitorServerI(monitors.MonitorServer):
         eventList = []
         for fileEvent in fileList:
             fileId = fileEvent[0]
-            if isbytes(fileId):
-                fileId = bytes_to_native_str(fileId)
+            if isinstance(fileId, bytes):
+                fileId = fileId.decode("utf-8")
             info = monitors.EventInfo(fileId, fileEvent[1])
             eventList.append(info)
 

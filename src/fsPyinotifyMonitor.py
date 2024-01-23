@@ -7,7 +7,6 @@
     Use is subject to license terms supplied in LICENSE.txt
 
 """
-from future.utils import bytes_to_native_str, isbytes
 from builtins import str
 from past.utils import old_div
 from builtins import object
@@ -175,8 +174,8 @@ class MyWatchManager(pyinotify.WatchManager):
     def addWatch(self, path, mask):
         if not self.isPathWatched(path):
             try:
-                if isbytes(path):
-                    path_obj = pathModule.path(bytes_to_native_str(path))
+                if isinstance(path, bytes):
+                    path_obj = pathModule.path(path.decode("utf-8"))
                 else:
                     path_obj = pathModule.path(path)
                 res = pyinotify.WatchManager.add_watch(
@@ -277,7 +276,7 @@ class ProcessEvent(pyinotify.ProcessEvent):
 
         # New directory within watch area,
         # either created, moved in or modfied attributes, ie now readable.
-        path_name = pathModule.path(bytes_to_native_str(name))
+        path_name = pathModule.path(name.decode("utf-8"))
         if (event.mask == (pyinotify.IN_CREATE | pyinotify.IN_ISDIR)
                 or event.mask == (pyinotify.IN_MOVED_TO | pyinotify.IN_ISDIR)
                 or event.mask == (pyinotify.IN_ATTRIB | pyinotify.IN_ISDIR)):

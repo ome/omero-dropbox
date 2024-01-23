@@ -9,19 +9,18 @@
 """
 
 import logging
-from future.utils import isbytes, bytes_to_native_str
 
 
 class NativeKeyDict(dict):
 
     def __getitem__(self, key):
-        if isbytes(key):
-            key = bytes_to_native_str(key)
+        if isinstance(key, bytes):
+            key = key.decode("utf-8")
         return dict.__getitem__(self, key)
 
     def __setitem__(self, key, val):
-        if isbytes(key):
-            key = bytes_to_native_str(key)
+        if isinstance(key, bytes):
+            key = key.decode("utf-8")
         return dict.__setitem__(self, key, val)
 
 
