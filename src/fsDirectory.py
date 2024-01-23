@@ -11,8 +11,6 @@
 
 """
 
-from builtins import str
-from builtins import object
 import logging
 from time import localtime, strftime
 

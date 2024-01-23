@@ -8,8 +8,6 @@
 
 """
 
-from builtins import str
-from builtins import range
 import logging
 log = logging.getLogger("fsclient.DropBox")
 

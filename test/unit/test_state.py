@@ -9,7 +9,6 @@
 
 """
 
-from builtins import object
 import pytest
 import logging
 import time

@@ -7,7 +7,6 @@
     Use is subject to license terms supplied in LICENSE.txt
 
 """
-from builtins import str
 import logging
 
 try:
