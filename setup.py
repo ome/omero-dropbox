@@ -54,5 +54,5 @@ setup(name="omero-dropbox",
       install_requires=[
           "omero-py",  # requires Ice (use wheel for faster installs)
       ],
-      python_requires='>=3',
+      python_requires='>=3.8',
       tests_require=['pytest', 'pytest-mock'])
