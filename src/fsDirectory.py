@@ -35,8 +35,8 @@ class Directory(object):
         the file system.
 
         :group Constructor: __init__
-        :group Accessors: getPath, getWhitelist, getBlacklist
-        :group Query Methods: onWhitelist, onBlacklist, isSubdirectory
+        :group Accessors: getPath, getAllowlist, getBlocklist
+        :group Query Methods: onAllowlist, onBlocklist, isSubdirectory
         :group Tree manipulation: patchTree
         :group Tree comparison: getExtraFilesFromTree, getChangedFilesFromTree
         :group Other Methods: getFile, pruneZeroFiles, getChangedFiles
@@ -44,7 +44,7 @@ class Directory(object):
 
     """
 
-    def __init__(self, pathString, whitelist=None, pathMode='Flat'):
+    def __init__(self, pathString, allowlist=None, pathMode='Flat'):
         """
             Build a tree of the directory given its path.
 
@@ -54,9 +54,9 @@ class Directory(object):
             :Parameters:
                 pathString : string
                     A full path to the directory of interest.
-                whitelist : Whitelist
+                allowlist : Allowlist
                     A list of extensions of interest.
-                blacklist : Blacklist
+                blocklist : Blocklist
                     A list of subdirectories to be ignored.
 
         """
@@ -67,11 +67,11 @@ class Directory(object):
         #: path as a pathModule path type
         self.path = pathModule.path(self.pathString)
 
-        # Use an empty whitelist if necessary.
-        if whitelist is None:
-            whitelist = []
-        #: whitelist of extensions
-        self.whitelist = fsLists.Whitelist(whitelist)
+        # Use an empty allowlist if necessary.
+        if allowlist is None:
+            allowlist = []
+        #: allowlist of extensions
+        self.allowlist = fsLists.Allowlist(allowlist)
 
         self.pathMode = pathMode
 
@@ -96,15 +96,15 @@ class Directory(object):
         reprStr += str(self.root)
         return reprStr
 
-    def getWhitelist(self):
+    def getAllowlist(self):
         """
-            Getter for the whitelist.
+            Getter for the allowlist.
 
-            :return: String representation whitelist.
+            :return: String representation allowlist.
             :rtype: list<string>
 
         """
-        return self.whitelist.asList()
+        return self.allowlist.asList()
 
     def getPath(self):
         """
@@ -116,19 +116,19 @@ class Directory(object):
         """
         return self.path
 
-    def onWhitelist(self, ext):
+    def onAllowlist(self, ext):
         """
-            Return true if extension is on whitelist of extensions.
+            Return true if extension is on allowlist of extensions.
 
             :Parameters:
                 ext : string
                     A file extension.
 
-            :return: Status of extension on whitelist.
+            :return: Status of extension on allowlist.
             :rtype: boolean
 
         """
-        return self.whitelist.onList(ext)
+        return self.allowlist.onList(ext)
 
     def isSubdirectory(self, pathString):
         """
@@ -137,7 +137,7 @@ class Directory(object):
 
             :todo: Check and return a value is pathString is a subdirectory
                 of the current Directory's path. This should be used when
-                first creating a snapshot to confirm that the blacklist
+                first creating a snapshot to confirm that the blocklist
                 contains valid subdirectories.
 
             :return: Status of subdirectory as part of directory.
@@ -177,7 +177,7 @@ class Directory(object):
 #         subTree = None
 #         path = pathModule.path(pathString)
 #         subPath = self.getPath().relpathto(path)
-#         if not self.onBlacklist(subPath):
+#         if not self.onBlocklist(subPath):
 #             subTree = self.root
 #             subParts = subPath.splitall()
 #             for part in subParts[1:]:
@@ -190,7 +190,7 @@ class Directory(object):
             Replace a subtree from the snaphot starting at pathString with
             new subtree.
 
-            For the given pathString, if it isn't on the blacklist,
+            For the given pathString, if it isn't on the blocklist,
             create a new tree from the live file system.
             Then, find the node in the snapshot representing the archive of
             that path.
@@ -362,7 +362,7 @@ class Directory(object):
 
             Co-ordinate the action of patching the snapshot and comparing
             files in the new and old trees. It is possible that both new
-            and old trees will be None if a blacklisted directory has been
+            and old trees will be None if a blocklisted directory has been
             the cause of an event, in this case empty lists are returned.
 
             :Parameters:
@@ -605,7 +605,7 @@ class DirNode(Node):
 
         """
         if path.isfile():
-            if self.base.onWhitelist(path.ext):
+            if self.base.onAllowlist(path.ext):
                 self.children[path.name] = FileNode(path)
         elif path.isdir():
             if self.mode == 'Flat':

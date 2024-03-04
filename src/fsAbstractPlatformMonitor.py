@@ -21,7 +21,7 @@ class AbstractPlatformMonitor(threading.Thread):
 
     """
 
-    def __init__(self, eventTypes, pathMode, pathString, whitelist, blacklist,
+    def __init__(self, eventTypes, pathMode, pathString, allowlist, blocklist,
                  ignoreSysFiles, ignoreDirEvents, proxy):
         """
             Set-up Monitor thread.
@@ -34,8 +34,8 @@ class AbstractPlatformMonitor(threading.Thread):
 
         self.pathMode = str(pathMode)
         self.pathsToMonitor = pathString
-        self.whitelist = whitelist
-        self.blacklist = blacklist
+        self.allowlist = allowlist
+        self.blocklist = blocklist
         self.ignoreSysFiles = ignoreSysFiles
         self.ignoreDirEvents = ignoreDirEvents
         self.proxy = proxy

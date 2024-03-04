@@ -199,8 +199,8 @@ class DropBox(Ice.Application):
                         monitorParameters[user]['eventTypes'],
                         monitorParameters[user]['pathMode'],
                         monitorParameters[user]['watchDir'],
-                        monitorParameters[user]['whitelist'],
-                        monitorParameters[user]['blacklist'],
+                        monitorParameters[user]['allowlist'],
+                        monitorParameters[user]['blocklist'],
                         monitorParameters[user]['timeout'],
                         monitorParameters[user]['blockSize'],
                         monitorParameters[user]['ignoreSysFiles'],
@@ -416,10 +416,10 @@ class DropBox(Ice.Application):
                 "omero.fs.eventTypes", "All").split(';'))
             pathMode = list(props.getPropertyWithDefault(
                 "omero.fs.pathMode", "Follow").split(';'))
-            whitelist = list(props.getPropertyWithDefault(
-                "omero.fs.whitelist", "").split(';'))
-            blacklist = list(props.getPropertyWithDefault(
-                "omero.fs.blacklist", "").split(';'))
+            allowlist = list(props.getPropertyWithDefault(
+                "omero.fs.allowlist", "").split(';'))
+            blocklist = list(props.getPropertyWithDefault(
+                "omero.fs.blocklist", "").split(';'))
             timeout = list(props.getPropertyWithDefault(
                 "omero.fs.timeout", "0.0").split(';'))
             blockSize = list(props.getPropertyWithDefault(
@@ -471,16 +471,16 @@ class DropBox(Ice.Application):
                         monitorParams[importUser[i]][
                             'pathMode'] = monitors.PathMode.__dict__["Follow"]
 
-                    monitorParams[importUser[i]]['whitelist'] = []
-                    for white in whitelist[i].split(','):
+                    monitorParams[importUser[i]]['allowlist'] = []
+                    for white in allowlist[i].split(','):
                         if white.strip(string.whitespace):
-                            monitorParams[importUser[i]]['whitelist'].append(
+                            monitorParams[importUser[i]]['allowlist'].append(
                                 white.strip(string.whitespace))
 
-                    monitorParams[importUser[i]]['blacklist'] = []
-                    for black in blacklist[i].split(','):
+                    monitorParams[importUser[i]]['blocklist'] = []
+                    for black in blocklist[i].split(','):
                         if black.strip(string.whitespace):
-                            monitorParams[importUser[i]]['blacklist'].append(
+                            monitorParams[importUser[i]]['blocklist'].append(
                                 black.strip(string.whitespace))
 
                     try:
