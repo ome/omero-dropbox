@@ -11,19 +11,13 @@
 
 """
 
-from builtins import str
-from builtins import object
 import logging
 from time import localtime, strftime
 
 # Third party path package. It provides much of the
 # functionality of os.path but without the complexity.
 # Imported as pathModule to avoid potential clashes.
-try:
-    from omero_ext import path as pathModule
-except ImportError:
-    # Python 2
-    import path as pathModule
+from omero_ext import path as pathModule
 
 import fsLists
 

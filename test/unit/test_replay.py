@@ -8,19 +8,13 @@
    Use is subject to license terms supplied in LICENSE.txt
 
 """
-from __future__ import print_function
 
-from builtins import object
 import pytest
 import logging
 
 from drivers import MockMonitor, Replay, with_driver
 
-try:
-    from omero_ext.path import path
-except ImportError:
-    # Python 2
-    from path import path
+from omero_ext.path import path
 
 logging.basicConfig(level=logging.WARN)
 
