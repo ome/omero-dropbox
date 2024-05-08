@@ -14,7 +14,7 @@ import os
 
 from setuptools import setup
 
-VERSION = "5.7.0"
+VERSION = "5.7.1.dev0"
 
 url = 'https://docs.openmicroscopy.org/latest/omero/developers/Server/FS.html'
 
