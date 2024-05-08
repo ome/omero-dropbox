@@ -1,3 +1,9 @@
+# 5.7.0 (May 2024)
+
+- Remove python-future compatibility code ([#23](https://github.com/ome/omero-dropbox/pull/23))
+- Add Python 3.11 to the testing matrix ([#22](https://github.com/ome/omero-dropbox/pull/22))
+- Drop Python 3.7 support ([#21](https://github.com/ome/omero-dropbox/pull/21))
+
 # 5.6.2 (March 2020)
 
 - Fix file closing ([#15](https://github.com/ome/omero-dropbox/pull/15))
