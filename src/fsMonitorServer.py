@@ -7,8 +7,6 @@
     Use is subject to license terms supplied in LICENSE.txt
 
 """
-from builtins import str
-from future.utils import native_str, bytes_to_native_str, isbytes
 import logging
 
 import uuid
@@ -246,8 +244,8 @@ class MonitorServerI(monitors.MonitorServer):
         eventList = []
         for fileEvent in fileList:
             fileId = fileEvent[0]
-            if isbytes(fileId):
-                fileId = bytes_to_native_str(fileId)
+            if isinstance(fileId, bytes):
+                fileId = fileId.decode("utf-8")
             info = monitors.EventInfo(fileId, fileEvent[1])
             eventList.append(info)
 
@@ -256,7 +254,7 @@ class MonitorServerI(monitors.MonitorServer):
         try:
             self.log.info('Event notification on monitor id= %s', monitorId)
             self.log.debug(' ...notifications are: %s', str(eventList))
-            proxy.fsEventHappened(native_str(monitorId), eventList)
+            proxy.fsEventHappened(str(monitorId), eventList)
         except Exception as e:
             self.log.info(
                 'Callback to monitor id=' + monitorId

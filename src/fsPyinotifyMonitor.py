@@ -7,11 +7,6 @@
     Use is subject to license terms supplied in LICENSE.txt
 
 """
-from __future__ import division
-from future.utils import bytes_to_native_str, isbytes
-from builtins import str
-from past.utils import old_div
-from builtins import object
 import logging
 import copy
 import time
@@ -30,11 +25,7 @@ importlog.info("Imported pyinotify version %s" % pyinotify.__version__)
 # Third party path package. It provides much of the
 # functionality of os.path but without the complexity.
 # Imported as pathModule to avoid potential clashes.
-try:
-    from omero_ext import path as pathModule
-except ImportError:
-    # Python 2
-    import path as pathModule
+from omero_ext import path as pathModule
 
 
 class PlatformMonitor(AbstractPlatformMonitor):
@@ -176,8 +167,8 @@ class MyWatchManager(pyinotify.WatchManager):
     def addWatch(self, path, mask):
         if not self.isPathWatched(path):
             try:
-                if isbytes(path):
-                    path_obj = pathModule.path(bytes_to_native_str(path))
+                if isinstance(path, bytes):
+                    path_obj = pathModule.path(path.decode("utf-8"))
                 else:
                     path_obj = pathModule.path(path)
                 res = pyinotify.WatchManager.add_watch(
@@ -261,8 +252,8 @@ class ProcessEvent(pyinotify.ProcessEvent):
             maskname = event.maskname
         except Exception:
             # pyinotify 0.7 or below
-            name = old_div(pathModule.path(event.path),
-                           pathModule.path(event.name))
+            name = (pathModule.path(event.path) /
+                pathModule.path(event.name))
             maskname = event.event_name
 
         el = []
@@ -278,7 +269,7 @@ class ProcessEvent(pyinotify.ProcessEvent):
 
         # New directory within watch area,
         # either created, moved in or modfied attributes, ie now readable.
-        path_name = pathModule.path(bytes_to_native_str(name))
+        path_name = pathModule.path(name.decode("utf-8"))
         if (event.mask == (pyinotify.IN_CREATE | pyinotify.IN_ISDIR)
                 or event.mask == (pyinotify.IN_MOVED_TO | pyinotify.IN_ISDIR)
                 or event.mask == (pyinotify.IN_ATTRIB | pyinotify.IN_ISDIR)):

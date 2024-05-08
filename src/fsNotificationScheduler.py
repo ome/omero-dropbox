@@ -7,9 +7,6 @@
     Use is subject to license terms supplied in LICENSE.txt
 
 """
-from future import standard_library
-standard_library.install_aliases()
-from builtins import range
 import logging
 import threading
 import queue
