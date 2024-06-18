@@ -51,8 +51,8 @@ class MonitorServerI(monitors.MonitorServer):
 
     """
 
-    def createMonitor(self, mType, eTypes, pMode, pathString, whitelist,
-                      blacklist, timeout, blockSize, ignoreSysFiles,
+    def createMonitor(self, mType, eTypes, pMode, pathString, allowlist,
+                      blocklist, timeout, blockSize, ignoreSysFiles,
                       ignoreDirEvents, platformCheck, proxy, current=None):
         """
             Create a the Monitor for a given path.
@@ -71,10 +71,10 @@ class MonitorServerI(monitors.MonitorServer):
                 pathString : string
                     A string representing a path to be monitored.
 
-                whitelist : list<string>
+                allowlist : list<string>
                     A list of extensions of interest.
 
-                blacklist : list<string>
+                blocklist : list<string>
                     A list of subdirectories to be excluded.
 
                 timeout : float
@@ -110,7 +110,7 @@ class MonitorServerI(monitors.MonitorServer):
             # blockSize (0) and ignoreDirEvents (True) hardwired until slice is
             # changed.
             self.monitors[monitorId] = MonitorFactory.createMonitor(
-                mType, eTypes, pMode, pathString, whitelist, blacklist,
+                mType, eTypes, pMode, pathString, allowlist, blocklist,
                 timeout, blockSize, ignoreSysFiles, ignoreDirEvents,
                 platformCheck, self, monitorId)
 
