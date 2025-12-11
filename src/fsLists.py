@@ -5,7 +5,7 @@
 
     These are fairly trivial classes to wrap sets. In the present
     implementation there is no functional difference between
-    Whitelist and Blacklist. They have been factored out for literal
+    Allowlist and Blocklist. They have been factored out for literal
     reasons and to leave the door open for future changes.
 
     Copyright 2009 University of Dundee. All rights reserved.
@@ -115,10 +115,10 @@ class Greylist(object):
             return anItem in self.theSet
 
 
-class Whitelist(Greylist):
+class Allowlist(Greylist):
 
     """
-        A class representing a whitelist of file extensions
+        A class representing a allowlist of file extensions
         that should be included in any watching.
 
         :group Constructor: __init__
@@ -127,7 +127,7 @@ class Whitelist(Greylist):
 
     def __init__(self, initialList=None):
         """
-            Create an initial whitelist.
+            Create an initial allowlist.
 
             :Parameters:
                 initialList : list<string>
@@ -139,10 +139,10 @@ class Whitelist(Greylist):
         Greylist.__init__(self, initialList)
 
 
-class Blacklist(Greylist):
+class Blocklist(Greylist):
 
     """
-        A class representing a blacklist of paths that should be
+        A class representing a blocklist of paths that should be
         excluded from any watching.
 
         :group Constructor: __init__
@@ -151,7 +151,7 @@ class Blacklist(Greylist):
 
     def __init__(self, initialList=None):
         """
-            Create an initial blacklist.
+            Create an initial blocklist.
 
             :Parameters:
                 initialList : list<string>
